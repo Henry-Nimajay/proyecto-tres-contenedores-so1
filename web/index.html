@@ -2,39 +2,301 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Gestor de Contactos - UMG</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestor de Contactos | Sistemas Operativos I - UMG</title>
     <style>
-        body { font-family: sans-serif; max-width: 600px; margin: 30px auto; padding: 15px; }
-        input, button { padding: 8px; margin: 5px 0; }
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
-        th { background: #eee; }
+        :root {
+            --umg-blue: #002855;
+            --umg-light-blue: #00509d;
+            --umg-gold: #f5b700;
+            --umg-red: #d90429;
+            --bg: #f0f4f8;
+            --card-bg: #ffffff;
+            --text: #1e293b;
+            --muted: #64748b;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #e2e8f0 0%, #f8fafc 100%);
+            color: var(--text);
+            min-height: 100vh;
+            padding-bottom: 40px;
+        }
+        header {
+            background: linear-gradient(90deg, var(--umg-blue) 0%, var(--umg-light-blue) 100%);
+            color: white;
+            padding: 24px 20px;
+            box-shadow: 0 4px 15px rgba(0, 40, 85, 0.2);
+            border-bottom: 4px solid var(--umg-gold);
+        }
+        .header-container {
+            max-width: 900px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        .brand h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+        }
+        .brand p {
+            font-size: 0.88rem;
+            color: #cbd5e1;
+            margin-top: 4px;
+        }
+        .badges {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .badge {
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            padding: 6px 12px;
+            border-radius: 999px;
+            font-size: 0.78rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .dot {
+            width: 8px;
+            height: 8px;
+            background: #22c55e;
+            border-radius: 50%;
+            box-shadow: 0 0 8px #22c55e;
+        }
+        .container {
+            max-width: 900px;
+            margin: 28px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 1fr 1.6fr;
+            gap: 24px;
+        }
+        @media (max-width: 720px) {
+            .container { grid-template-columns: 1fr; }
+        }
+        .card {
+            background: var(--card-bg);
+            border-radius: 14px;
+            padding: 24px;
+            box-shadow: 0 10px 25px rgba(15, 23, 42, 0.06);
+            border: 1px solid #e2e8f0;
+        }
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--umg-blue);
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 2px solid #f1f5f9;
+            padding-bottom: 10px;
+        }
+        .counter {
+            background: #e0f2fe;
+            color: #0369a1;
+            font-size: 0.8rem;
+            padding: 4px 10px;
+            border-radius: 999px;
+            font-weight: 600;
+        }
+        .form-group {
+            margin-bottom: 16px;
+        }
+        label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #334155;
+            margin-bottom: 6px;
+        }
+        input {
+            width: 100%;
+            padding: 11px 14px;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            transition: all 0.2s;
+            outline: none;
+        }
+        input:focus {
+            border-color: var(--umg-light-blue);
+            box-shadow: 0 0 0 3px rgba(0, 80, 157, 0.15);
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(90deg, var(--umg-blue), var(--umg-light-blue));
+            color: white;
+            font-weight: 600;
+            font-size: 0.95rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.15s, box-shadow 0.2s;
+            box-shadow: 0 4px 12px rgba(0, 80, 157, 0.25);
+        }
+        button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(0, 80, 157, 0.35);
+        }
+        .info-box {
+            margin-top: 20px;
+            padding: 12px;
+            background: #f8fafc;
+            border-left: 4px solid var(--umg-gold);
+            border-radius: 6px;
+            font-size: 0.8rem;
+            color: var(--muted);
+            line-height: 1.4;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th {
+            text-align: left;
+            padding: 12px;
+            background: #f8fafc;
+            color: #475569;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        td {
+            padding: 14px 12px;
+            border-bottom: 1px solid #f1f5f9;
+            font-size: 0.95rem;
+        }
+        tr:hover td {
+            background-color: #f8fafc;
+        }
+        .id-pill {
+            background: #f1f5f9;
+            color: #475569;
+            font-weight: 700;
+            padding: 4px 9px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+        }
+        .avatar-cell {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+            color: #0f172a;
+        }
+        .avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--umg-blue);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            font-weight: 700;
+        }
+        .phone-tag {
+            font-family: monospace;
+            font-size: 0.92rem;
+            color: #0369a1;
+            background: #f0f9ff;
+            padding: 4px 8px;
+            border-radius: 6px;
+        }
     </style>
 </head>
 <body>
-    <h2>Gestor de Contactos (3 Contenedores)</h2>
-    <form id="formulario">
-        <input type="text" id="nombre" placeholder="Nombre" required>
-        <input type="text" id="telefono" placeholder="Teléfono" required>
-        <button type="submit">Guardar Contacto</button>
-    </form>
-    <table>
-        <thead>
-            <tr><th>ID</th><th>Nombre</th><th>Teléfono</th></tr>
-        </thead>
-        <tbody id="lista"></tbody>
-    </table>
+
+    <header>
+        <div class="header-container">
+            <div class="brand">
+                <h1>Gestor de Contactos — Arquitectura 3 Capas</h1>
+                <p>Universidad Mariano Gálvez de Guatemala • Sistemas Operativos I</p>
+            </div>
+            <div class="badges">
+                <div class="badge"><span class="dot"></span> Web: nginx:alpine</div>
+                <div class="badge"><span class="dot"></span> API: node:3000</div>
+                <div class="badge"><span class="dot"></span> DB: postgres:5432</div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="card">
+            <div class="card-title">
+                <span>Nuevo Contacto</span>
+            </div>
+            <form id="formulario">
+                <div class="form-group">
+                    <label for="nombre">Nombre Completo</label>
+                    <input type="text" id="nombre" placeholder="Ej. Ing. Carlos Méndez" required>
+                </div>
+                <div class="form-group">
+                    <label for="telefono">Número de Teléfono</label>
+                    <input type="text" id="telefono" placeholder="Ej. 5544-3322" required>
+                </div>
+                <button type="submit">+ Guardar en Base de Datos</button>
+            </form>
+            <div class="info-box">
+                <strong>Flujo activo:</strong> Petición enviada por red bridge desde <code>proyecto_web</code> hacia <code>http://api:3000</code> y almacenada en el volumen <code>pgdata</code>.
+            </div>
+        </section>
+
+        <section class="card">
+            <div class="card-title">
+                <span>Directorio Registrado</span>
+                <span class="counter" id="contador">0 contactos</span>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Contacto</th>
+                        <th>Teléfono</th>
+                    </tr>
+                </thead>
+                <tbody id="lista"></tbody>
+            </table>
+        </section>
+    </main>
 
     <script>
         async function cargar() {
             const res = await fetch('/contactos');
             const datos = await res.json();
             const lista = document.getElementById('lista');
+            const contador = document.getElementById('contador');
             lista.innerHTML = '';
+            contador.textContent = `${datos.length} ${datos.length === 1 ? 'contacto' : 'contactos'}`;
+
             datos.forEach(c => {
-                lista.innerHTML += `<tr><td>${c.id}</td><td>${c.nombre}</td><td>${c.telefono}</td></tr>`;
+                const inicial = c.nombre ? c.nombre.trim().charAt(0).toUpperCase() : '?';
+                lista.innerHTML += `
+                    <tr>
+                        <td><span class="id-pill">#${c.id}</span></td>
+                        <td>
+                            <div class="avatar-cell">
+                                <div class="avatar">${inicial}</div>
+                                <span>${c.nombre}</span>
+                            </div>
+                        </td>
+                        <td><span class="phone-tag">📞 ${c.telefono}</span></td>
+                    </tr>`;
             });
         }
+
         document.getElementById('formulario').onsubmit = async (e) => {
             e.preventDefault();
             await fetch('/contactos', {
@@ -48,6 +310,7 @@
             document.getElementById('formulario').reset();
             cargar();
         };
+
         cargar();
     </script>
 </body>
