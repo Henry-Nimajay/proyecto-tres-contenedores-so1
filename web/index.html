@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestor de Contactos - UMG</title>
+    <style>
+        body { font-family: sans-serif; max-width: 600px; margin: 30px auto; padding: 15px; }
+        input, button { padding: 8px; margin: 5px 0; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+        th { background: #eee; }
+    </style>
+</head>
+<body>
+    <h2>Gestor de Contactos (3 Contenedores)</h2>
+    <form id="formulario">
+        <input type="text" id="nombre" placeholder="Nombre" required>
+        <input type="text" id="telefono" placeholder="Teléfono" required>
+        <button type="submit">Guardar Contacto</button>
+    </form>
+    <table>
+        <thead>
+            <tr><th>ID</th><th>Nombre</th><th>Teléfono</th></tr>
+        </thead>
+        <tbody id="lista"></tbody>
+    </table>
+
+    <script>
+        async function cargar() {
+            const res = await fetch('/contactos');
+            const datos = await res.json();
+            const lista = document.getElementById('lista');
+            lista.innerHTML = '';
+            datos.forEach(c => {
+                lista.innerHTML += `<tr><td>${c.id}</td><td>${c.nombre}</td><td>${c.telefono}</td></tr>`;
+            });
+        }
+        document.getElementById('formulario').onsubmit = async (e) => {
+            e.preventDefault();
+            await fetch('/contactos', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    nombre: document.getElementById('nombre').value,
+                    telefono: document.getElementById('telefono').value
+                })
+            });
+            document.getElementById('formulario').reset();
+            cargar();
+        };
+        cargar();
+    </script>
+</body>
+</html>
